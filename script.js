@@ -1,18 +1,35 @@
-function createGameboard() {
-  const gameBoard = [];
+const game = (function createGame() {
+  const POSSIBLE_COMBINATIONS = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9],
+    [1, 4, 7],
+    [2, 5, 8],
+    [3, 6, 9],
+    [1, 5, 9],
+    [3, 5, 7],
+  ];
 
-  const getGameboard = () => gameBoard;
+  (function createGameboard() {
+    const gameBoard = [];
 
-  return { getGameboard };
-}
+    const getGameboard = () => gameBoard;
 
-function createPlayer(name) {
-  const playerName = name;
+    return { getGameboard };
+  })();
 
-  const getName = () => playerName;
+  function createPlayer(name, symbol) {
+    const player = {
+      name,
+      symbol,
+    };
 
-  return { getName };
-}
+    const getInfo = () => player;
 
-const gameBoard = createGameboard();
-const player = createPlayer('Ivan');
+    return { getInfo };
+  }
+
+  const getPossibleCombinations = () => POSSIBLE_COMBINATIONS;
+
+  return { getPossibleCombinations, createPlayer };
+})();
