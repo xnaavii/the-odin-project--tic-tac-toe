@@ -1,9 +1,18 @@
-const { getGameboard } = (function createGameboard() {
+function createGameboard() {
   const gameBoard = [];
 
   const getGameboard = () => gameBoard;
 
   return { getGameboard };
-})();
+}
 
-console.log(getGameboard());
+function createPlayer(name) {
+  const playerName = name;
+
+  const getName = () => playerName;
+
+  return { getName };
+}
+
+const gameBoard = createGameboard();
+const player = createPlayer('Ivan');
