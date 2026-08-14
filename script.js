@@ -1,4 +1,4 @@
-const game = (function createGame() {
+const game = (() => {
   const POSSIBLE_COMBINATIONS = [
     [1, 2, 3],
     [4, 5, 6],
@@ -10,7 +10,7 @@ const game = (function createGame() {
     [3, 5, 7],
   ];
 
-  (function createGameboard() {
+  const { getGameboard } = (() => {
     const gameBoard = [];
 
     const getGameboard = () => gameBoard;
@@ -31,5 +31,7 @@ const game = (function createGame() {
 
   const getPossibleCombinations = () => POSSIBLE_COMBINATIONS;
 
-  return { getPossibleCombinations, createPlayer };
+  return { getPossibleCombinations, createPlayer, getGameboard };
 })();
+
+game.createPlayer('Ivan', 'X');
