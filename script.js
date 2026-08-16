@@ -66,15 +66,28 @@ function GameController(
   };
 
   const playRound = (row, column) => {
-    const selectedCell = board.getBoard()[row][column];
+    const currentBoard = board.getBoard();
+    const selectedCell = currentBoard[row][column];
     if (selectedCell.getValue() !== '') {
       console.log(
         `This cell is already marked by the opponent, please select another cell.`,
       );
       return;
     }
+
     console.log(`Marking ${getActivePlayer().name}'s cell`);
     board.markCell(row, column, getActivePlayer().mark);
+
+    const rowWin = currentBoard[row].every(
+      (cell) => cell.getValue() !== '' && cell.getValue() === activePlayer.mark,
+    );
+
+    if (rowWin) {
+      console.log(`Player: ${activePlayer.name} wins!`);
+      return;
+    }
+
+    // If row is filled with same mark, that player wins
 
     switchPlayerTurn();
     printNewRound();
@@ -85,6 +98,8 @@ function GameController(
 
 const game = GameController();
 game.playRound(0, 0);
-game.playRound(0, 0);
+game.playRound(2, 0);
 game.playRound(0, 1);
-game.playRound(0, 1);
+game.playRound(2, 1);
+game.playRound(0, 2);
+game.playRound(2, 2);
