@@ -42,7 +42,44 @@ function Cell() {
   return { addMark, getValue };
 }
 
-const board = GameBoard();
+function GameController(
+  playerOneName = 'Player One',
+  playerTwoName = 'Player Two',
+) {
+  const board = GameBoard();
 
-board.markCell(0, 1, 'Player One');
-board.printBoard();
+  const players = [
+    { name: playerOneName, mark: 'X' },
+    { name: playerTwoName, mark: 'O' },
+  ];
+
+  let activePlayer = players[0];
+
+  const switchPlayerTurn = () => {
+    activePlayer = activePlayer === players[0] ? players[1] : players[0];
+  };
+  const getActivePlayer = () => activePlayer;
+
+  const printNewRound = () => {
+    board.printBoard();
+    console.log(`${getActivePlayer().name}'s turn.`);
+  };
+
+  const playRound = (row, column) => {
+    console.log(`Marking ${getActivePlayer().name}'s cell`);
+    board.markCell(row, column, getActivePlayer().mark);
+
+    switchPlayerTurn();
+    printNewRound();
+  };
+
+  return { playRound };
+}
+
+const game = GameController();
+game.playRound(0, 0);
+game.playRound(1, 0);
+game.playRound(0, 1);
+game.playRound(1, 1);
+game.playRound(0, 2);
+game.playRound(1, 2);
