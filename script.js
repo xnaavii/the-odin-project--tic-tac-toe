@@ -1,37 +1,33 @@
-const game = (() => {
-  const POSSIBLE_COMBINATIONS = [
-    [1, 2, 3],
-    [4, 5, 6],
-    [7, 8, 9],
-    [1, 4, 7],
-    [2, 5, 8],
-    [3, 6, 9],
-    [1, 5, 9],
-    [3, 5, 7],
-  ];
+function GameBoard() {
+  const rows = 3;
+  const columns = 3;
+  const board = [];
 
-  const { getGameboard } = (() => {
-    const gameBoard = [];
-
-    const getGameboard = () => gameBoard;
-
-    return { getGameboard };
-  })();
-
-  function createPlayer(name, symbol) {
-    const player = {
-      name,
-      symbol,
-    };
-
-    const getInfo = () => player;
-
-    return { getInfo };
+  // Create a 2d array
+  for (let i = 0; i < rows; i++) {
+    board[i] = [];
+    for (let j = 0; j < columns; j++) {
+      board[i].push(Cell());
+    }
   }
 
-  const getPossibleCombinations = () => POSSIBLE_COMBINATIONS;
+  const getBoard = () => board;
+  const printBoard = () => console.log(board);
 
-  return { getPossibleCombinations, createPlayer, getGameboard };
-})();
+  return { getBoard, printBoard };
+}
 
-game.createPlayer('Ivan', 'X');
+function Cell() {
+  let value = '';
+
+  const markSpace = (player) => {
+    value = player;
+  };
+
+  const getValue = () => value;
+
+  return { markSpace, getValue };
+}
+
+const board = GameBoard();
+board.printBoard();
