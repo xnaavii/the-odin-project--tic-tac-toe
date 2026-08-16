@@ -12,22 +12,37 @@ function GameBoard() {
   }
 
   const getBoard = () => board;
-  const printBoard = () => console.log(board);
 
-  return { getBoard, printBoard };
+  const markCell = (row, column, player) => {
+    const selectedCell = board[row][column];
+    if (selectedCell.getValue() !== '') return;
+
+    selectedCell.addMark(player);
+  };
+
+  const printBoard = () => {
+    const boardWithCellValues = board.map((row) =>
+      row.map((cell) => cell.getValue()),
+    );
+    console.log(boardWithCellValues);
+  };
+
+  return { getBoard, printBoard, markCell };
 }
 
 function Cell() {
   let value = '';
 
-  const markSpace = (player) => {
+  const addMark = (player) => {
     value = player;
   };
 
   const getValue = () => value;
 
-  return { markSpace, getValue };
+  return { addMark, getValue };
 }
 
 const board = GameBoard();
+
+board.markCell(0, 1, 'Player One');
 board.printBoard();
