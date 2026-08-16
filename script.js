@@ -66,6 +66,13 @@ function GameController(
   };
 
   const playRound = (row, column) => {
+    const selectedCell = board.getBoard()[row][column];
+    if (selectedCell.getValue() !== '') {
+      console.log(
+        `This cell is already marked by the opponent, please select another cell.`,
+      );
+      return;
+    }
     console.log(`Marking ${getActivePlayer().name}'s cell`);
     board.markCell(row, column, getActivePlayer().mark);
 
@@ -78,8 +85,6 @@ function GameController(
 
 const game = GameController();
 game.playRound(0, 0);
-game.playRound(1, 0);
+game.playRound(0, 0);
 game.playRound(0, 1);
-game.playRound(1, 1);
-game.playRound(0, 2);
-game.playRound(1, 2);
+game.playRound(0, 1);
