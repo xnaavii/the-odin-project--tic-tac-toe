@@ -70,31 +70,39 @@ function GameController(
     const selectedCell = currentBoard[row][column];
 
     if (selectedCell.getValue() !== '') {
-      console.log(
-        `This cell is already marked by the opponent, please select another cell.`,
-      );
+      if (selectedCell.getValue() !== activePlayer.mark) {
+        console.log(
+          'This cell is already marked by the opponent, please select another cell.',
+        );
+      } else {
+        console.log('You already marked this cell.');
+      }
       return;
     }
 
     console.log(`Marking ${getActivePlayer().name}'s cell`);
-
     board.markCell(row, column, getActivePlayer().mark);
 
-    // Check every cell in the row
     const rowWin = currentBoard[row].every(
-      (cell) => cell.getValue() !== '' && cell.getValue() === activePlayer.mark,
+      (cell) => cell.getValue() === activePlayer.mark,
     );
 
-    // Check every cell in the column
     const columnWin = currentBoard
       .map((row) => row[column])
-      .every(
-        (cell) =>
-          cell.getValue() !== '' && cell.getValue() === activePlayer.mark,
-      );
+      .every((cell) => cell.getValue() === activePlayer.mark);
 
-    if (rowWin || columnWin) {
+    const diagonalWin = currentBoard
+      .map((row, i) => row[i])
+      .every((cell) => cell.getValue() === activePlayer.mark);
+
+    const antiDiagonalWin = currentBoard
+      .toReversed()
+      .map((row, i) => row[i])
+      .every((cell) => cell.getValue() === activePlayer.mark);
+
+    if (rowWin || columnWin || diagonalWin || antiDiagonalWin) {
       console.log(`Player: ${activePlayer.name} wins!`);
+      board.printBoard();
       return;
     }
 
@@ -107,8 +115,7 @@ function GameController(
 
 const game = GameController();
 game.playRound(0, 0);
-game.playRound(0, 1);
 game.playRound(1, 0);
-game.playRound(0, 2);
+game.playRound(1, 1);
 game.playRound(2, 0);
-game.playRound(2, 0);
+game.playRound(2, 2);
