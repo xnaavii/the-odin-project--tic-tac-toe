@@ -65,6 +65,11 @@ function GameController(
     console.log(`${getActivePlayer().name}'s turn.`);
   };
 
+  const printGameOver = () => {
+    board.printBoard();
+    console.log(`Game over! ${getActivePlayer().name} wins!.`);
+  };
+
   const playRound = (row, column) => {
     const currentBoard = board.getBoard();
     const selectedCell = currentBoard[row][column];
@@ -101,8 +106,7 @@ function GameController(
       .every((cell) => cell.getValue() === activePlayer.mark);
 
     if (rowWin || columnWin || diagonalWin || antiDiagonalWin) {
-      console.log(`Player: ${activePlayer.name} wins!`);
-      board.printBoard();
+      printGameOver();
       return;
     }
 
