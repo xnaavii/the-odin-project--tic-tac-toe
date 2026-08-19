@@ -21,21 +21,20 @@ function GameBoard() {
     selectedCell.addMark(player);
   };
 
-  const checkCells = (row, column, player) => {
-    const rows = board[row].every((cell) => cell.getValue() === player);
+  const checkCells = (row, column, playerMark) => {
+    const rows = board[row].every((c) => c.getValue() === playerMark);
+    const columns = board.every((r) => r[column].getValue() === playerMark);
+    const diagonal =
+      row === column
+        ? board.every((r, i) => r[i].getValue() === playerMark)
+        : false;
 
-    const columns = board
-      .map((row) => row[column])
-      .every((cell) => cell.getValue() === player);
-
-    const diagonal = board
-      .map((row, i) => row[i])
-      .every((cell) => cell.getValue() === player);
-
-    const antiDiagonal = board
-      .toReversed()
-      .map((row, i) => row[i])
-      .every((cell) => cell.getValue() === player);
+    const antiDiagonal =
+      row + column === board.length - 1
+        ? board.every(
+            (r, i) => r[board.length - 1 - i].getValue() === playerMark,
+          )
+        : false;
 
     return rows || columns || diagonal || antiDiagonal;
   };
@@ -90,18 +89,11 @@ function GameController(
     console.log(`Game over! ${getActivePlayer().name} wins!.`);
   };
 
-  // Write a function that checks win conditions
-  // TODO: Refactor this to not repeat
-  const checkWin = (row, column, playerMark) => {
-    return board.checkCells(row, column, playerMark);
-  };
-
   const playRound = (row, column) => {
     console.log(`Marking ${getActivePlayer().name}'s cell`);
     board.markCell(row, column, getActivePlayer().mark);
 
-    console.log(checkWin(row, column, getActivePlayer().mark));
-    if (checkWin(row, column, getActivePlayer().mark)) {
+    if (board.checkCells(row, column, getActivePlayer().mark)) {
       printGameOver();
       return;
     }
@@ -114,8 +106,17 @@ function GameController(
 }
 
 const game = GameController();
-game.playRound(0, 0);
+
+// // Row
+// game.playRound(0, 0);
+// game.playRound(1, 0);
+// game.playRound(0, 1);
+// game.playRound(1, 1);
+// game.playRound(0, 2);
+// game.playRound(1, 2);
+
+game.playRound(2, 2);
 game.playRound(1, 0);
 game.playRound(1, 1);
 game.playRound(2, 0);
-game.playRound(2, 2);
+game.playRound(0, 0);
