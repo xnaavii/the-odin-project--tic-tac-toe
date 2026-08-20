@@ -21,22 +21,28 @@ function GameBoard() {
     selectedCell.addMark(player);
   };
 
-  const checkCells = (row, column, playerMark) => {
-    const rows = board[row].every((c) => c.getValue() === playerMark);
-    const columns = board.every((r) => r[column].getValue() === playerMark);
-    const diagonal =
+  const checkWin = (row, column, playerMark) => {
+    const isRowWin = board[row].every((c) => c.getValue() === playerMark);
+    const isColumnWin = board.every((r) => r[column].getValue() === playerMark);
+    const isDiagonalWin =
       row === column
         ? board.every((r, i) => r[i].getValue() === playerMark)
         : false;
 
-    const antiDiagonal =
+    const isAntiDiagonalWin =
       row + column === board.length - 1
         ? board.every(
             (r, i) => r[board.length - 1 - i].getValue() === playerMark,
           )
         : false;
 
-    return rows || columns || diagonal || antiDiagonal;
+    return isRowWin || isColumnWin || isDiagonalWin || isAntiDiagonalWin;
+  };
+
+  const checkDraw = () => {
+    const isDraw = board.every((r, c) => r[c].getValue() !== '');
+
+    return isDraw;
   };
 
   const printBoard = () => {
@@ -46,7 +52,7 @@ function GameBoard() {
     console.log(boardWithCellValues);
   };
 
-  return { getBoard, printBoard, markCell, checkCells };
+  return { getBoard, printBoard, markCell, checkWin, checkDraw };
 }
 
 function Cell() {
@@ -96,25 +102,23 @@ function GameController(
   };
 
   const playRound = (row, column) => {
-    console.log(`Marking ${getActivePlayer().name}'s cell`);
-    board.markCell(row, column, getActivePlayer().mark);
-    const draw = board
-      .getBoard()
-      .every((row, column) => row[column].getValue() !== '');
-    const win = board.checkCells(row, column, getActivePlayer().mark);
+    const currentPlayer = getActivePlayer();
 
-    if (draw) {
-      printDraw();
-      return;
-    }
+    console.log(`Marking ${currentPlayer.name}'s cell`);
+    board.markCell(row, column, currentPlayer.mark);
 
-    if (win) {
+    const isWin = board.checkWin(row, column, currentPlayer.mark);
+    const isDraw = !isWin && board.checkDraw();
+
+    if (isWin) {
       printGameOver();
       return;
+    } else if (isDraw) {
+      printDraw();
+    } else {
+      switchPlayerTurn();
+      printNewRound();
     }
-
-    switchPlayerTurn();
-    printNewRound();
   };
 
   return { playRound };
@@ -123,12 +127,12 @@ function GameController(
 const game = GameController();
 
 // // Row
-// game.playRound(0, 0);
-// game.playRound(1, 0);
-// game.playRound(0, 1);
-// game.playRound(1, 1);
-// game.playRound(0, 2);
-// game.playRound(1, 2);
+game.playRound(0, 0);
+game.playRound(1, 0);
+game.playRound(0, 1);
+game.playRound(1, 1);
+game.playRound(0, 2);
+game.playRound(1, 2);
 
 // Diagonal P1
 // game.playRound(2, 2);
@@ -137,14 +141,14 @@ const game = GameController();
 // game.playRound(2, 0);
 // game.playRound(0, 0);
 
-// Check for draw
-game.playRound(0, 0);
-game.playRound(0, 1);
-game.playRound(0, 2);
-game.playRound(1, 1);
-game.playRound(1, 0);
-game.playRound(1, 2);
-game.playRound(0, 2);
-game.playRound(2, 0);
-game.playRound(2, 1);
-game.playRound(2, 2);
+// // Check for draw
+// game.playRound(0, 0);
+// game.playRound(0, 1);
+// game.playRound(0, 2);
+// game.playRound(1, 1);
+// game.playRound(1, 0);
+// game.playRound(1, 2);
+// game.playRound(0, 2);
+// game.playRound(2, 0);
+// game.playRound(2, 1);
+// game.playRound(2, 2);
