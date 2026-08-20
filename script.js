@@ -77,6 +77,7 @@ function GameController(
   const switchPlayerTurn = () => {
     activePlayer = activePlayer === players[0] ? players[1] : players[0];
   };
+
   const getActivePlayer = () => activePlayer;
 
   const printNewRound = () => {
@@ -89,11 +90,25 @@ function GameController(
     console.log(`Game over! ${getActivePlayer().name} wins!.`);
   };
 
+  const printDraw = () => {
+    board.printBoard();
+    console.log("No one wins, it's a draw!");
+  };
+
   const playRound = (row, column) => {
     console.log(`Marking ${getActivePlayer().name}'s cell`);
     board.markCell(row, column, getActivePlayer().mark);
+    const draw = board
+      .getBoard()
+      .every((row, column) => row[column].getValue() !== '');
+    const win = board.checkCells(row, column, getActivePlayer().mark);
 
-    if (board.checkCells(row, column, getActivePlayer().mark)) {
+    if (draw) {
+      printDraw();
+      return;
+    }
+
+    if (win) {
       printGameOver();
       return;
     }
@@ -115,8 +130,21 @@ const game = GameController();
 // game.playRound(0, 2);
 // game.playRound(1, 2);
 
-game.playRound(2, 2);
-game.playRound(1, 0);
-game.playRound(1, 1);
-game.playRound(2, 0);
+// Diagonal P1
+// game.playRound(2, 2);
+// game.playRound(1, 0);
+// game.playRound(1, 1);
+// game.playRound(2, 0);
+// game.playRound(0, 0);
+
+// Check for draw
 game.playRound(0, 0);
+game.playRound(0, 1);
+game.playRound(0, 2);
+game.playRound(1, 1);
+game.playRound(1, 0);
+game.playRound(1, 2);
+game.playRound(0, 2);
+game.playRound(2, 0);
+game.playRound(2, 1);
+game.playRound(2, 2);
