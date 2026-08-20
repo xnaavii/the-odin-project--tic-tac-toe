@@ -85,11 +85,15 @@ function GameController(
   ];
 
   let activePlayer = players[0];
+  let gameOver = false;
 
   const switchPlayerTurn = () => {
     activePlayer = activePlayer === players[0] ? players[1] : players[0];
   };
 
+  const toggleGameOver = () => (gameOver = !gameOver);
+
+  const getGameOver = () => gameOver;
   const getActivePlayer = () => activePlayer;
 
   const printNewRound = () => {
@@ -98,12 +102,10 @@ function GameController(
   };
 
   const printGameOver = () => {
-    board.printBoard();
     console.log(`Game over! ${getActivePlayer().name} wins!.`);
   };
 
   const printDraw = () => {
-    board.printBoard();
     console.log("No one wins, it's a draw!");
   };
 
@@ -112,6 +114,11 @@ function GameController(
   };
 
   const playRound = (row, column) => {
+    if (getGameOver()) {
+      printGameOver();
+      return;
+    }
+
     if (board.isCellMarked(row, column)) {
       printAlreadyMarked();
       return;
@@ -125,14 +132,19 @@ function GameController(
     const isDraw = board.isDraw();
 
     if (isWin) {
+      toggleGameOver();
       printGameOver();
       return;
-    } else if (isDraw) {
-      printDraw();
-    } else {
-      switchPlayerTurn();
-      printNewRound();
     }
+
+    if (isDraw) {
+      toggleGameOver();
+      printDraw();
+      return;
+    }
+
+    switchPlayerTurn();
+    printNewRound();
   };
 
   return { playRound };
