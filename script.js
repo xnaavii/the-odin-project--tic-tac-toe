@@ -21,7 +21,7 @@ function GameBoard() {
     selectedCell.addMark(player);
   };
 
-  const checkWin = (row, column, playerMark) => {
+  const isWin = (row, column, playerMark) => {
     const isRowWin = board[row].every((c) => c.getValue() === playerMark);
     const isColumnWin = board.every((r) => r[column].getValue() === playerMark);
     const isDiagonalWin =
@@ -39,11 +39,10 @@ function GameBoard() {
     return isRowWin || isColumnWin || isDiagonalWin || isAntiDiagonalWin;
   };
 
-  const checkDraw = () => {
-    const isDraw = board.every((r, c) => r[c].getValue() !== '');
+  const isDraw = () =>
+    board.every((row) => row.every((cell) => cell.getValue() !== ''));
 
-    return isDraw;
-  };
+  const isCellMarked = (row, column) => board[row][column].getValue() !== '';
 
   const printBoard = () => {
     const boardWithCellValues = board.map((row) =>
@@ -52,7 +51,14 @@ function GameBoard() {
     console.log(boardWithCellValues);
   };
 
-  return { getBoard, printBoard, markCell, checkWin, checkDraw };
+  return {
+    getBoard,
+    printBoard,
+    markCell,
+    isWin,
+    isDraw,
+    isCellMarked,
+  };
 }
 
 function Cell() {
@@ -101,14 +107,22 @@ function GameController(
     console.log("No one wins, it's a draw!");
   };
 
-  const playRound = (row, column) => {
-    const currentPlayer = getActivePlayer();
+  const printAlreadyMarked = () => {
+    console.log('This cell is already marked. Please select another cell.');
+  };
 
+  const playRound = (row, column) => {
+    if (board.isCellMarked(row, column)) {
+      printAlreadyMarked();
+      return;
+    }
+
+    const currentPlayer = getActivePlayer();
     console.log(`Marking ${currentPlayer.name}'s cell`);
     board.markCell(row, column, currentPlayer.mark);
 
-    const isWin = board.checkWin(row, column, currentPlayer.mark);
-    const isDraw = !isWin && board.checkDraw();
+    const isWin = board.isWin(row, column, currentPlayer.mark);
+    const isDraw = board.isDraw();
 
     if (isWin) {
       printGameOver();
@@ -132,7 +146,7 @@ game.playRound(1, 0);
 game.playRound(0, 1);
 game.playRound(1, 1);
 game.playRound(0, 2);
-game.playRound(1, 2);
+game.playRound(0, 2);
 
 // Diagonal P1
 // game.playRound(2, 2);
