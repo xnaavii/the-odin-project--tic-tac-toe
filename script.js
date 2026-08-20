@@ -14,11 +14,11 @@ function GameBoard() {
   const getBoard = () => board;
 
   const markCell = (row, column, player) => {
-    const selectedCell = board[row][column];
+    const cell = board[row][column];
 
-    if (selectedCell.getValue() !== '') return;
+    if (cell.getValue() !== '') return;
 
-    selectedCell.addMark(player);
+    cell.addMark(player);
   };
 
   const isWin = (row, column, playerMark) => {
@@ -141,19 +141,19 @@ function GameController(
 const game = GameController();
 
 // // Row
-game.playRound(0, 0);
-game.playRound(1, 0);
-game.playRound(0, 1);
-game.playRound(1, 1);
-game.playRound(0, 2);
-game.playRound(0, 2);
+// game.playRound(0, 0);
+// game.playRound(1, 0);
+// game.playRound(0, 1);
+// game.playRound(1, 1);
+// game.playRound(0, 2);
+// game.playRound(0, 2);
 
 // Diagonal P1
-// game.playRound(2, 2);
-// game.playRound(1, 0);
-// game.playRound(1, 1);
-// game.playRound(2, 0);
-// game.playRound(0, 0);
+game.playRound(2, 2);
+game.playRound(1, 0);
+game.playRound(1, 1);
+game.playRound(2, 0);
+game.playRound(0, 0);
 
 // // Check for draw
 // game.playRound(0, 0);
