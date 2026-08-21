@@ -102,6 +102,7 @@ function GameController(
   };
 
   const printGameOver = () => {
+    board.printBoard();
     console.log(`Game over! ${getActivePlayer().name} wins!.`);
   };
 
@@ -150,7 +151,29 @@ function GameController(
   return { playRound };
 }
 
-const game = GameController();
+(function DisplayController() {
+  // TODO: Render the board
+  const board = [
+    ['X', 'O', 'X'],
+    ['X', 'O', 'X'],
+    ['X', 'O', 'X'],
+  ];
+
+  const renderBoard = () => {
+    const container = document.querySelector('#board');
+    container.innerHTML = '';
+
+    const html = board.map((row) => `<div>${row}</div>`).join('');
+    container.insertAdjacentHTML('beforeend', html);
+  };
+
+  renderBoard();
+
+  // TODO: Render active player
+  // TODO: Render messages, such as game over or cell is marked
+})();
+
+// const game = GameController();
 
 // // Row
 // game.playRound(0, 0);
@@ -161,11 +184,11 @@ const game = GameController();
 // game.playRound(0, 2);
 
 // Diagonal P1
-game.playRound(2, 2);
-game.playRound(1, 0);
-game.playRound(1, 1);
-game.playRound(2, 0);
-game.playRound(0, 0);
+// game.playRound(2, 2);
+// game.playRound(1, 0);
+// game.playRound(1, 1);
+// game.playRound(2, 0);
+// game.playRound(0, 0);
 
 // // Check for draw
 // game.playRound(0, 0);
