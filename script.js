@@ -25,16 +25,11 @@ function GameBoard() {
     const isRowWin = board[row].every((c) => c.getValue() === playerMark);
     const isColumnWin = board.every((r) => r[column].getValue() === playerMark);
     const isDiagonalWin =
-      row === column
-        ? board.every((r, i) => r[i].getValue() === playerMark)
-        : false;
+      row === column && board.every((r, i) => r[i].getValue() === playerMark);
 
     const isAntiDiagonalWin =
-      row + column === board.length - 1
-        ? board.every(
-            (r, i) => r[board.length - 1 - i].getValue() === playerMark,
-          )
-        : false;
+      row + column === board.length - 1 &&
+      board.every((r, i) => r[board.length - 1 - i].getValue() === playerMark);
 
     return isRowWin || isColumnWin || isDiagonalWin || isAntiDiagonalWin;
   };
@@ -148,29 +143,45 @@ function GameController(
     printNewRound();
   };
 
-  return { playRound, board };
+  return { playRound, board, getActivePlayer, getGameOver };
 }
 
 (function DisplayController() {
+  const container = document.querySelector('#board');
   const game = GameController();
-  const board = game.board.getBoard();
-  game.playRound(0, 0);
-  game.playRound(1, 0);
-  game.playRound(0, 1);
-  game.playRound(1, 1);
 
   const renderBoard = () => {
-    const container = document.querySelector('#board');
+    const board = game.board.getBoard();
     container.innerHTML = board
-      .map((row) =>
+      .map((row, rowIndex) =>
         row
-          .map((cell) => `<div class="cell">${cell.getValue()}</div>`)
+          .map(
+            (cell, colIndex) =>
+              `<div class="cell" data-row=${rowIndex} data-col=${colIndex}>${cell.getValue()}</div>`,
+          )
           .join(''),
       )
       .join('');
   };
 
+  const markCellHandler = (e) => {
+    const isGameOver = game.getGameOver();
+
+    if (isGameOver) return;
+
+    const row = Number(e.target.dataset.row);
+    const col = Number(e.target.dataset.col);
+
+    const isMarked = game.board.isCellMarked(row, col);
+
+    if (!isMarked && e.target.classList.contains('cell')) {
+      game.playRound(row, col);
+      renderBoard();
+    }
+  };
+
   renderBoard();
+  container.addEventListener('click', markCellHandler);
 
   // TODO: Render active player
   // TODO: Render messages, such as game over or cell is marked
