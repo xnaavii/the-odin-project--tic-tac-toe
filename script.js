@@ -186,32 +186,3 @@ function GameController(
   // TODO: Render active player
   // TODO: Render messages, such as game over or cell is marked
 })();
-
-// const game = GameController();
-
-// // Row
-// game.playRound(0, 0);
-// game.playRound(1, 0);
-// game.playRound(0, 1);
-// game.playRound(1, 1);
-// game.playRound(0, 2);
-// game.playRound(0, 2);
-
-// Diagonal P1
-// game.playRound(2, 2);
-// game.playRound(1, 0);
-// game.playRound(1, 1);
-// game.playRound(2, 0);
-// game.playRound(0, 0);
-
-// // Check for draw
-// game.playRound(0, 0);
-// game.playRound(0, 1);
-// game.playRound(0, 2);
-// game.playRound(1, 1);
-// game.playRound(1, 0);
-// game.playRound(1, 2);
-// game.playRound(0, 2);
-// game.playRound(2, 0);
-// game.playRound(2, 1);
-// game.playRound(2, 2);
