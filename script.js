@@ -148,23 +148,22 @@ function GameController(
     printNewRound();
   };
 
-  return { playRound };
+  return { playRound, board };
 }
 
 (function DisplayController() {
-  // TODO: Render the board
-  const board = [
-    ['X', 'O', 'X'],
-    ['X', 'O', 'X'],
-    ['X', 'O', 'X'],
-  ];
+  const game = GameController();
+  const board = game.board.getBoard();
+  game.playRound(0, 0);
+  game.playRound(1, 0);
+  game.playRound(0, 1);
+  game.playRound(1, 1);
 
   const renderBoard = () => {
     const container = document.querySelector('#board');
-    container.innerHTML = '';
-
-    const html = board.map((row) => `<div>${row}</div>`).join('');
-    container.insertAdjacentHTML('beforeend', html);
+    container.innerHTML = board
+      .map((row) => row.map((cell) => `<div>${cell.getValue()}</div>`).join(''))
+      .join('');
   };
 
   renderBoard();
