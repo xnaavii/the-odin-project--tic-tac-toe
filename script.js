@@ -162,7 +162,11 @@ function GameController(
   const renderBoard = () => {
     const container = document.querySelector('#board');
     container.innerHTML = board
-      .map((row) => row.map((cell) => `<div>${cell.getValue()}</div>`).join(''))
+      .map((row) =>
+        row
+          .map((cell) => `<div class="cell">${cell.getValue()}</div>`)
+          .join(''),
+      )
       .join('');
   };
 
