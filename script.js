@@ -193,6 +193,4 @@ function GameController(
 
   render();
   document.querySelector('#board').addEventListener('click', markCellHandler);
-  // TODO: Render messages, such as game over or cell is marked
-  // TODO: Add input for players
 })();
