@@ -147,12 +147,17 @@ function GameController(
 }
 
 (function DisplayController() {
-  const container = document.querySelector('#board');
   const game = GameController();
 
-  const renderBoard = () => {
+  const render = () => {
+    // Render active player
+    const activePlayer = game.getActivePlayer();
+    document.querySelector('#active-player').textContent =
+      `${activePlayer.name}'s turn`;
+
+    // Render the board
     const board = game.board.getBoard();
-    container.innerHTML = board
+    document.querySelector('#board').innerHTML = board
       .map((row, rowIndex) =>
         row
           .map(
@@ -176,13 +181,14 @@ function GameController(
 
     if (!isMarked && e.target.classList.contains('cell')) {
       game.playRound(row, col);
-      renderBoard();
+      render();
     }
   };
 
-  renderBoard();
-  container.addEventListener('click', markCellHandler);
+  render();
+  board.addEventListener('click', markCellHandler);
 
   // TODO: Render active player
   // TODO: Render messages, such as game over or cell is marked
+  // TODO: Add input for players
 })();

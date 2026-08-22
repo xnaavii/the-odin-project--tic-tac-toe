@@ -27,6 +27,13 @@ body {
   min-height: 100vh;
 }
 
+#container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 48px;
+}
+
 #board {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
