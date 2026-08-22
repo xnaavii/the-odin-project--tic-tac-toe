@@ -11,7 +11,7 @@ function GameBoard() {
     }
   }
 
-  const getBoard = () => board;
+  const getBoard = () => board.map((row) => row.map((cell) => cell.getValue()));
 
   const markCell = (row, column, player) => {
     const cell = board[row][column];
@@ -34,7 +34,7 @@ function GameBoard() {
     return isRowWin || isColumnWin || isDiagonalWin || isAntiDiagonalWin;
   };
 
-  const isDraw = () =>
+  const isBoardFull = () =>
     board.every((row) => row.every((cell) => cell.getValue() !== ''));
 
   const isCellMarked = (row, column) => board[row][column].getValue() !== '';
@@ -51,7 +51,7 @@ function GameBoard() {
     printBoard,
     markCell,
     isWin,
-    isDraw,
+    isBoardFull,
     isCellMarked,
   };
 }
@@ -81,15 +81,18 @@ function GameController(
 
   let activePlayer = players[0];
   let gameOver = false;
+  let isDraw = false;
 
+  const toggleGameOver = () => (gameOver = true);
   const switchPlayerTurn = () => {
     activePlayer = activePlayer === players[0] ? players[1] : players[0];
   };
 
-  const toggleGameOver = () => (gameOver = !gameOver);
-
   const getGameOver = () => gameOver;
+  const getIsDraw = () => isDraw;
   const getActivePlayer = () => activePlayer;
+  const getBoard = () => board.getBoard();
+  const isCellMarked = (row, col) => board.isCellMarked(row, col);
 
   const printNewRound = () => {
     board.printBoard();
@@ -125,7 +128,7 @@ function GameController(
     board.markCell(row, column, currentPlayer.mark);
 
     const isWin = board.isWin(row, column, currentPlayer.mark);
-    const isDraw = board.isDraw();
+    const isFull = board.isBoardFull();
 
     if (isWin) {
       toggleGameOver();
@@ -133,7 +136,8 @@ function GameController(
       return;
     }
 
-    if (isDraw) {
+    if (isFull) {
+      isDraw = true;
       toggleGameOver();
       printDraw();
       return;
@@ -143,34 +147,38 @@ function GameController(
     printNewRound();
   };
 
-  return { playRound, board, getActivePlayer, getGameOver };
+  return {
+    playRound,
+    getBoard,
+    getActivePlayer,
+    getGameOver,
+    getIsDraw,
+    isCellMarked,
+  };
 }
 
 (function DisplayController() {
   const game = GameController();
 
   const render = () => {
-    const board = game.board.getBoard();
-    const isGameOver = game.getGameOver();
-    const isDraw = game.board.isDraw();
+    const board = game.getBoard();
     const activePlayer = game.getActivePlayer();
     const message = document.querySelector('#message');
 
-    if (isGameOver && isDraw) {
+    if (game.getGameOver() && game.getIsDraw()) {
       message.textContent = 'Game over! Draw!';
-    } else if (isGameOver) {
+    } else if (game.getGameOver()) {
       message.textContent = `Game over! ${activePlayer.name} wins!`;
     } else {
       message.textContent = `${activePlayer.name}'s turn`;
     }
 
-    // Render the board
     document.querySelector('#board').innerHTML = board
       .map((row, rowIndex) =>
         row
           .map(
-            (cell, colIndex) =>
-              `<div class="cell" data-row=${rowIndex} data-col=${colIndex}>${cell.getValue()}</div>`,
+            (cellValue, colIndex) =>
+              `<div class="cell" data-row=${rowIndex} data-col=${colIndex}>${cellValue}</div>`,
           )
           .join(''),
       )
@@ -178,12 +186,12 @@ function GameController(
   };
 
   const markCellHandler = (e) => {
+    if (game.getGameOver()) return;
+
     const row = Number(e.target.dataset.row);
     const col = Number(e.target.dataset.col);
 
-    const isMarked = game.board.isCellMarked(row, col);
-
-    if (!isMarked && e.target.classList.contains('cell')) {
+    if (e.target.classList.contains('cell') && !game.isCellMarked(row, col)) {
       game.playRound(row, col);
       render();
     }
