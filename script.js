@@ -150,13 +150,23 @@ function GameController(
   const game = GameController();
 
   const render = () => {
-    // Render active player
+    const board = game.board.getBoard();
+    const isGameOver = game.getGameOver();
+    const isDraw = game.board.isDraw();
     const activePlayer = game.getActivePlayer();
-    document.querySelector('#active-player').textContent =
-      `${activePlayer.name}'s turn`;
+    const message = document.querySelector('#message');
+
+    if (isGameOver) {
+      if (isDraw) {
+        message.textContent = 'Game over! Draw!';
+      }
+
+      message.textContent = `Game over! ${activePlayer.name} wins!`;
+    } else {
+      message.textContent = `${activePlayer.name}'s turn`;
+    }
 
     // Render the board
-    const board = game.board.getBoard();
     document.querySelector('#board').innerHTML = board
       .map((row, rowIndex) =>
         row
@@ -170,10 +180,6 @@ function GameController(
   };
 
   const markCellHandler = (e) => {
-    const isGameOver = game.getGameOver();
-
-    if (isGameOver) return;
-
     const row = Number(e.target.dataset.row);
     const col = Number(e.target.dataset.col);
 
@@ -186,9 +192,7 @@ function GameController(
   };
 
   render();
-  board.addEventListener('click', markCellHandler);
-
-  // TODO: Render active player
+  document.querySelector('#board').addEventListener('click', markCellHandler);
   // TODO: Render messages, such as game over or cell is marked
   // TODO: Add input for players
 })();
