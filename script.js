@@ -156,11 +156,9 @@ function GameController(
     const activePlayer = game.getActivePlayer();
     const message = document.querySelector('#message');
 
-    if (isGameOver) {
-      if (isDraw) {
-        message.textContent = 'Game over! Draw!';
-      }
-
+    if (isGameOver && isDraw) {
+      message.textContent = 'Game over! Draw!';
+    } else if (isGameOver) {
       message.textContent = `Game over! ${activePlayer.name} wins!`;
     } else {
       message.textContent = `${activePlayer.name}'s turn`;
