@@ -198,6 +198,7 @@ function GameController(
 
         if (cellEl && cellEl.textContent !== cellValue) {
           cellEl.textContent = cellValue;
+          cellEl.dataset.cellValue = cellValue;
         }
       });
     });
