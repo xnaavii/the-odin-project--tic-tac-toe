@@ -54,3 +54,38 @@ body {
 .cell:hover {
   background: rgba(0, 0, 0, 0.055);
 }
+
+menu {
+  width: 100%;
+}
+
+menu > ul {
+  display: flex;
+  justify-content: space-between;
+  list-style-type: none;
+}
+
+.btn {
+  padding: 12px 16px;
+  border: 1px solid #000000;
+  box-shadow: 1px 3px 0 1px #000000;
+  background: #ffffff;
+}
+
+.btn-primary {
+  border: 1px solid #0088ff;
+  box-shadow: 1px 3px 0 1px #0088ff;
+
+  &:hover {
+    background: #0088ff60;
+  }
+}
+
+.btn-destructive {
+  border: 1px solid #ff383c;
+  box-shadow: 1px 3px 0 1px #ff383c;
+
+  &:hover {
+    background: #ff383c60;
+  }
+}
