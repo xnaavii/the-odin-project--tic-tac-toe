@@ -7,7 +7,7 @@
 
   --label-vibrant: #1a1a1a;
   --label-secondary: #3c3c4360;
-  --label-tertiary: #3c3c4330;
+  --label-tertiary: #3c3c43;
   --label-quaternary: #3c3c4318;
 }
 
@@ -178,7 +178,7 @@ menu > ul {
     animation-duration: 1000ms;
     animation-name: pulse;
     animation-iteration-count: infinite;
-    animation-direction: alternate-reverse;
+    animation-direction: alternate;
     position: relative;
     isolation: isolate;
   }
