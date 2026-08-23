@@ -75,8 +75,8 @@ function GameController(
   const board = GameBoard();
 
   const players = [
-    { name: playerOneName, mark: 'X' },
-    { name: playerTwoName, mark: 'O' },
+    { id: 1, name: playerOneName, mark: 'X' },
+    { id: 2, name: playerTwoName, mark: 'O' },
   ];
 
   let activePlayer = players[0];
@@ -164,13 +164,33 @@ function GameController(
     const board = game.getBoard();
     const activePlayer = game.getActivePlayer();
     const message = document.querySelector('#message');
+    const activePlayerEl = document.querySelector('#active-player');
 
     if (game.getGameOver() && game.getIsDraw()) {
       message.textContent = 'Game over! Draw!';
     } else if (game.getGameOver()) {
       message.textContent = `Game over! ${activePlayer.name} wins!`;
     } else {
-      message.textContent = `${activePlayer.name}'s turn`;
+      message.textContent = 'Your Turn';
+      activePlayerEl.textContent = activePlayer.name;
+
+      if (
+        activePlayer.id === 1 &&
+        !activePlayerEl.classList.contains('player-one')
+      ) {
+        activePlayerEl.classList.add('player-one');
+      } else {
+        activePlayerEl.classList.remove('player-one');
+      }
+
+      if (
+        activePlayer.id === 2 &&
+        !activePlayerEl.classList.contains('player-two')
+      ) {
+        activePlayerEl.classList.add('player-two');
+      } else {
+        activePlayerEl.classList.remove('player-two');
+      }
     }
 
     document.querySelector('#board').innerHTML = board
