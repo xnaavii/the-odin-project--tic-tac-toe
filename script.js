@@ -222,11 +222,11 @@ function GameController(
       messageEl.textContent = `Game over! ${activePlayer.name} wins!`;
     } else {
       messageEl.textContent = 'Your Turn';
-      activePlayerEl.textContent = activePlayer.name;
     }
   };
 
   const updateActivePlayer = (activePlayer) => {
+    activePlayerEl.textContent = activePlayer.name;
     activePlayerEl.classList.toggle('player-one', activePlayer.id === 1);
     activePlayerEl.classList.toggle('player-two', activePlayer.id === 2);
   };
