@@ -161,7 +161,8 @@ function GameController(
   const game = GameController();
 
   const gameBoardEl = document.querySelector('#game-board');
-  const activePlayerEl = document.querySelector('#active-player');
+  const activePlayerNameEl = document.querySelector('#active-player--name');
+  const activePlayerMarkEl = document.querySelector('#active-player--mark');
   const messageEl = document.querySelector('#message');
 
   const initializeBoard = () => {
@@ -227,9 +228,13 @@ function GameController(
   };
 
   const updateActivePlayer = (activePlayer) => {
-    activePlayerEl.textContent = activePlayer.name;
-    activePlayerEl.classList.toggle('player-one', activePlayer.id === 1);
-    activePlayerEl.classList.toggle('player-two', activePlayer.id === 2);
+    activePlayerNameEl.textContent = activePlayer.name;
+    activePlayerNameEl.classList.toggle('player-one', activePlayer.id === 1);
+    activePlayerNameEl.classList.toggle('player-two', activePlayer.id === 2);
+
+    activePlayerMarkEl.textContent = activePlayer.mark;
+    activePlayerMarkEl.classList.toggle('player-one', activePlayer.id === 1);
+    activePlayerMarkEl.classList.toggle('player-two', activePlayer.id === 2);
   };
 
   initializeBoard();
