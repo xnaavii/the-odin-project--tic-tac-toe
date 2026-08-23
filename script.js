@@ -91,7 +91,7 @@ function GameController(
   const getGameOver = () => gameOver;
   const getIsDraw = () => isDraw;
   const getActivePlayer = () => activePlayer;
-  const getBoard = () => board.getBoard();
+  const getGameBoard = () => board.getBoard();
   const isCellMarked = (row, col) => board.isCellMarked(row, col);
 
   const printNewRound = () => {
@@ -149,7 +149,7 @@ function GameController(
 
   return {
     playRound,
-    getBoard,
+    getGameBoard,
     getActivePlayer,
     getGameOver,
     getIsDraw,
@@ -160,40 +160,14 @@ function GameController(
 (function DisplayController() {
   const game = GameController();
 
-  const render = () => {
-    const board = game.getBoard();
-    const activePlayer = game.getActivePlayer();
-    const message = document.querySelector('#message');
-    const activePlayerEl = document.querySelector('#active-player');
+  const gameBoardEl = document.querySelector('#game-board');
+  const activePlayerEl = document.querySelector('#active-player');
+  const messageEl = document.querySelector('#message');
 
-    if (game.getGameOver() && game.getIsDraw()) {
-      message.textContent = 'Game over! Draw!';
-    } else if (game.getGameOver()) {
-      message.textContent = `Game over! ${activePlayer.name} wins!`;
-    } else {
-      message.textContent = 'Your Turn';
-      activePlayerEl.textContent = activePlayer.name;
+  const initializeBoard = () => {
+    const currentBoard = game.getGameBoard();
 
-      if (
-        activePlayer.id === 1 &&
-        !activePlayerEl.classList.contains('player-one')
-      ) {
-        activePlayerEl.classList.add('player-one');
-      } else {
-        activePlayerEl.classList.remove('player-one');
-      }
-
-      if (
-        activePlayer.id === 2 &&
-        !activePlayerEl.classList.contains('player-two')
-      ) {
-        activePlayerEl.classList.add('player-two');
-      } else {
-        activePlayerEl.classList.remove('player-two');
-      }
-    }
-
-    document.querySelector('#board').innerHTML = board
+    gameBoardEl.innerHTML = currentBoard
       .map((row, rowIndex) =>
         row
           .map(
@@ -203,6 +177,30 @@ function GameController(
           .join(''),
       )
       .join('');
+
+    gameBoardEl.addEventListener('click', markCellHandler);
+  };
+
+  const render = () => {
+    const currentBoard = game.getGameBoard();
+    const activePlayer = game.getActivePlayer();
+    updateMessage(activePlayer);
+    updateActivePlayer(activePlayer);
+    updateGameBoard(currentBoard);
+  };
+
+  const updateGameBoard = (currentBoard) => {
+    currentBoard.forEach((row, rowIndex) => {
+      row.forEach((cellValue, colIndex) => {
+        const cellEl = gameBoardEl.querySelector(
+          `[data-row="${rowIndex}"][data-col="${colIndex}"]`,
+        );
+
+        if (cellEl && cellEl.textContent !== cellValue) {
+          cellEl.textContent = cellValue;
+        }
+      });
+    });
   };
 
   const markCellHandler = (e) => {
@@ -211,12 +209,28 @@ function GameController(
     const row = Number(e.target.dataset.row);
     const col = Number(e.target.dataset.col);
 
-    if (e.target.classList.contains('cell') && !game.isCellMarked(row, col)) {
+    if (!game.isCellMarked(row, col)) {
       game.playRound(row, col);
       render();
     }
   };
 
+  const updateMessage = (activePlayer) => {
+    if (game.getGameOver() && game.getIsDraw()) {
+      messageEl.textContent = 'Game over! Draw!';
+    } else if (game.getGameOver()) {
+      messageEl.textContent = `Game over! ${activePlayer.name} wins!`;
+    } else {
+      messageEl.textContent = 'Your Turn';
+      activePlayerEl.textContent = activePlayer.name;
+    }
+  };
+
+  const updateActivePlayer = (activePlayer) => {
+    activePlayerEl.classList.toggle('player-one', activePlayer.id === 1);
+    activePlayerEl.classList.toggle('player-two', activePlayer.id === 2);
+  };
+
+  initializeBoard();
   render();
-  document.querySelector('#board').addEventListener('click', markCellHandler);
 })();

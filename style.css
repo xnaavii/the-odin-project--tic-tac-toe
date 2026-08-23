@@ -47,7 +47,7 @@ html {
   gap: 48px;
 }
 
-#board {
+#game-board {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   flex: 1;
