@@ -124,12 +124,15 @@ menu > ul {
 #change-name--dialog {
   &:open {
     margin: auto;
-    padding: 24px;
+    padding: 32px;
     border: none;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: 24px;
+    max-width: 600px;
+    width: 100%;
   }
 
   #change-name--title {
@@ -141,6 +144,14 @@ menu > ul {
     height: 100%;
     display: flex;
     flex-direction: column;
+    gap: 32px;
+  }
+
+  #change-name--actions-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: flex-end;
     gap: 12px;
   }
 }
