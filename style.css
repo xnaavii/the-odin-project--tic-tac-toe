@@ -157,6 +157,36 @@ menu > ul {
   }
 }
 
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  input {
+    font-size: 1.25rem;
+    padding: 8px 16px;
+    box-shadow: 1px 3px 0 1px #000000;
+    transition: all ease 100ms;
+
+    &:focus {
+      font-size: 1.5rem;
+      font-weight: 500;
+      animation-duration: 1000ms;
+      animation-name: pulse;
+      animation-iteration-count: infinite;
+      animation-direction: alternate;
+    }
+  }
+
+  #player-two--name {
+    color: var(--accent-red);
+  }
+
+  #player-one--name {
+    color: var(--accent-blue);
+  }
+}
+
 #game-container {
   display: flex;
   flex-direction: column;
