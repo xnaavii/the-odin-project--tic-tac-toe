@@ -17,13 +17,7 @@
       <menu>
         <ul>
           <li>
-            <button
-              type="button"
-              class="btn btn-primary"
-              id="change-name--btn"
-              command="show-modal"
-              commandfor="change-name--dialog"
-            >
+            <button type="button" class="btn btn-primary" id="change-name--btn">
               Change Name
             </button>
             <dialog id="change-name--dialog">
@@ -47,9 +41,9 @@
                 </div>
                 <button type="submit" class="btn btn-primary">Change</button>
                 <button
-                  type="submit"
+                  type="button"
                   class="btn btn-destructive"
-                  command="hide"
+                  id="change-name--cancel-btn"
                 >
                   Cancel
                 </button>

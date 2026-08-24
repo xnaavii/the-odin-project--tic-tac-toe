@@ -98,6 +98,7 @@ function GameController(
   const getIsDraw = () => isDraw;
   const getActivePlayer = () => activePlayer;
   const getGameBoard = () => board.getBoard();
+  const getPlayers = () => players;
   const isCellMarked = (row, col) => board.isCellMarked(row, col);
 
   const printNewRound = () => {
@@ -161,6 +162,7 @@ function GameController(
     getIsDraw,
     isCellMarked,
     changePlayerName,
+    getPlayers,
   };
 }
 
@@ -171,7 +173,12 @@ function GameController(
   const activePlayerNameEl = document.querySelector('#active-player--name');
   const activePlayerMarkEl = document.querySelector('#active-player--mark');
   const messageEl = document.querySelector('#message');
-  const changeNameBtn = document.querySelector('#change-name--btn');
+  const changeNameBtnEl = document.querySelector('#change-name--btn');
+  const cancelChangeNameBtnEl = document.querySelector(
+    '#change-name--cancel-btn',
+  );
+  const changeNameDialogEl = document.querySelector('#change-name--dialog');
+  const changeNameFormEl = document.querySelector('#change-name--form');
 
   const initializeBoard = () => {
     const currentBoard = game.getGameBoard();
@@ -192,10 +199,12 @@ function GameController(
 
   const render = () => {
     const currentBoard = game.getGameBoard();
+    const players = game.getPlayers();
     const activePlayer = game.getActivePlayer();
     updateMessage(activePlayer);
     updateActivePlayer(activePlayer);
     updateGameBoard(currentBoard);
+    updateChangeNameForm(players);
   };
 
   const updateGameBoard = (currentBoard) => {
@@ -225,6 +234,14 @@ function GameController(
     }
   };
 
+  const openChangeNameDialog = () => {
+    changeNameDialogEl.showModal();
+  };
+
+  const closeChangeNameDialog = () => {
+    changeNameDialogEl.close();
+  };
+
   const updateMessage = (activePlayer) => {
     if (game.getGameOver() && game.getIsDraw()) {
       messageEl.textContent = 'Game over! Draw!';
@@ -244,6 +261,17 @@ function GameController(
     activePlayerMarkEl.classList.toggle('player-one', activePlayer.id === 1);
     activePlayerMarkEl.classList.toggle('player-two', activePlayer.id === 2);
   };
+
+  const updateChangeNameForm = (players) => {
+    const playerOneNameInputEl = document.querySelector('#player-one--name');
+    const playerTwoNameInputEl = document.querySelector('#player-two--name');
+
+    playerOneNameInputEl.setAttribute('placeholder', players[0].name);
+    playerTwoNameInputEl.setAttribute('placeholder', players[1].name);
+  };
+
+  changeNameBtnEl.addEventListener('click', openChangeNameDialog);
+  cancelChangeNameBtnEl.addEventListener('click', closeChangeNameDialog);
 
   initializeBoard();
   render();
