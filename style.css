@@ -130,13 +130,14 @@ menu > ul {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 24px;
+    gap: 48px;
     max-width: 600px;
     width: 100%;
   }
 
   #change-name--title {
     font-weight: 600;
+    font-size: 2rem;
   }
 
   #change-name--form {
