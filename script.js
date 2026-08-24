@@ -234,14 +234,6 @@ function GameController(
     }
   };
 
-  const openChangeNameDialog = () => {
-    changeNameDialogEl.showModal();
-  };
-
-  const closeChangeNameDialog = () => {
-    changeNameDialogEl.close();
-  };
-
   const updateMessage = (activePlayer) => {
     if (game.getGameOver() && game.getIsDraw()) {
       messageEl.textContent = 'Game over! Draw!';
@@ -262,16 +254,42 @@ function GameController(
     activePlayerMarkEl.classList.toggle('player-two', activePlayer.id === 2);
   };
 
+  const openChangeNameDialog = () => {
+    changeNameDialogEl.showModal();
+  };
+
+  const closeChangeNameDialog = () => {
+    changeNameDialogEl.close();
+  };
+
   const updateChangeNameForm = (players) => {
     const playerOneNameInputEl = document.querySelector('#player-one--name');
     const playerTwoNameInputEl = document.querySelector('#player-two--name');
 
-    playerOneNameInputEl.setAttribute('placeholder', players[0].name);
-    playerTwoNameInputEl.setAttribute('placeholder', players[1].name);
+    playerOneNameInputEl.setAttribute('value', players[0].name);
+    playerTwoNameInputEl.setAttribute('value', players[1].name);
+  };
+
+  const changeNameFormHandler = (e) => {
+    e.preventDefault();
+    const formData = new FormData(changeNameFormEl);
+
+    const playerOneName = formData.get('player-one--name');
+    const playerTwoName = formData.get('player-two--name');
+
+    if (playerOneName !== '' && playerTwoName !== '') {
+      game.changePlayerName(1, playerOneName);
+      game.changePlayerName(2, playerTwoName);
+
+      closeChangeNameDialog();
+    }
+
+    render();
   };
 
   changeNameBtnEl.addEventListener('click', openChangeNameDialog);
   cancelChangeNameBtnEl.addEventListener('click', closeChangeNameDialog);
+  changeNameFormEl.addEventListener('submit', changeNameFormHandler);
 
   initializeBoard();
   render();
