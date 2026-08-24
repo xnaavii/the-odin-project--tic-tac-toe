@@ -68,16 +68,72 @@ function Cell() {
   return { addMark, getValue };
 }
 
+function ScoreBoard() {
+  const scoreBoard = [];
+
+  const getScoreBoard = () => scoreBoard;
+
+  const addPlayer = (playerId) => {
+    const playerExists = scoreBoard.some((player) => player.id === playerId);
+    if (playerExists) return;
+
+    scoreBoard.push({ id: playerId, score: Score() });
+  };
+
+  const getPlayerScore = (playerId) => {
+    const player = scoreBoard.find((player) => player.id === playerId);
+    if (player) {
+      return player.score.getScore();
+    }
+  };
+
+  const addScoreToPlayer = (playerId, points = 1) => {
+    const player = scoreBoard.find((player) => player.id === playerId);
+    if (player) {
+      player.score.addScore(points);
+    }
+  };
+
+  return { getScoreBoard, addPlayer, getPlayerScore, addScoreToPlayer };
+}
+
+function Score() {
+  let score = 0;
+
+  const addScore = (points = 1) => {
+    score += points;
+  };
+
+  const resetScore = () => {
+    score = 0;
+  };
+
+  const getScore = () => score;
+
+  return {
+    addScore,
+    resetScore,
+    getScore,
+  };
+}
+
 function GameController(
   playerOneName = 'Player One',
   playerTwoName = 'Player Two',
 ) {
-  const board = GameBoard();
-
   const players = [
     { id: 1, name: playerOneName, mark: 'X' },
     { id: 2, name: playerTwoName, mark: 'O' },
   ];
+
+  const board = GameBoard();
+  const scoreBoard = ScoreBoard();
+
+  players.forEach((player) => {
+    scoreBoard.addPlayer(player.id);
+  });
+
+  console.log(scoreBoard.getScoreBoard());
 
   let activePlayer = players[0];
   let gameOver = false;
