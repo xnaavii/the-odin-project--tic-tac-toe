@@ -120,13 +120,19 @@ menu > ul {
 }
 
 #change-name--dialog {
-  margin: 0 auto;
-  position: fixed;
-  top: 50%;
-  padding: 24px;
-  border: none;
+  &:open {
+    margin: auto;
+    padding: 24px;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
 
   #change-name--form {
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     gap: 12px;
