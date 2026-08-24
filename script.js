@@ -87,6 +87,12 @@ function GameController(
   const switchPlayerTurn = () => {
     activePlayer = activePlayer === players[0] ? players[1] : players[0];
   };
+  const changePlayerName = (playerId, name) => {
+    const playerIndex = players.indexOf(
+      players.find((player) => player.id === playerId),
+    );
+    players[playerIndex].name = name;
+  };
 
   const getGameOver = () => gameOver;
   const getIsDraw = () => isDraw;
@@ -154,6 +160,7 @@ function GameController(
     getGameOver,
     getIsDraw,
     isCellMarked,
+    changePlayerName,
   };
 }
 
@@ -164,6 +171,7 @@ function GameController(
   const activePlayerNameEl = document.querySelector('#active-player--name');
   const activePlayerMarkEl = document.querySelector('#active-player--mark');
   const messageEl = document.querySelector('#message');
+  const changeNameBtn = document.querySelector('#change-name--btn');
 
   const initializeBoard = () => {
     const currentBoard = game.getGameBoard();

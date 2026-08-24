@@ -17,7 +17,44 @@
       <menu>
         <ul>
           <li>
-            <button type="button" class="btn btn-primary">Change Name</button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              id="change-name--btn"
+              command="show-modal"
+              commandfor="change-name--dialog"
+            >
+              Change Name
+            </button>
+            <dialog id="change-name--dialog">
+              <p id="change-name--title">Change player name</p>
+              <form id="change-name--form" method="dialog">
+                <div class="input-group">
+                  <label for="player-one--name">Player One</label>
+                  <input
+                    type="text"
+                    id="player-one--name"
+                    name="player-one--name"
+                  />
+                </div>
+                <div class="input-group">
+                  <label for="player-two--name">Player Two</label>
+                  <input
+                    type="text"
+                    id="player-two--name"
+                    name="player-two--name"
+                  />
+                </div>
+                <button type="submit" class="btn btn-primary">Change</button>
+                <button
+                  type="submit"
+                  class="btn btn-destructive"
+                  command="hide"
+                >
+                  Cancel
+                </button>
+              </form>
+            </dialog>
           </li>
           <li>
             <button type="button" class="btn btn-destructive">Reset</button>
