@@ -32,6 +32,7 @@ html {
     'Open Sans',
     'Helvetica Neue',
     sans-serif;
+  color: var(--label-vibrant);
 }
 
 #container {
@@ -97,6 +98,7 @@ menu > ul {
   padding: 12px 16px;
   border: 1px solid #000000;
   box-shadow: 1px 3px 0 1px #000000;
+  font-weight: 500;
   background: #ffffff;
   font-family: 'Roboto Mono', monospace;
 }
@@ -128,6 +130,10 @@ menu > ul {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+  }
+
+  #change-name--title {
+    font-weight: 600;
   }
 
   #change-name--form {
