@@ -133,8 +133,6 @@ function GameController(
     scoreBoard.addPlayer(player.id);
   });
 
-  console.log(scoreBoard.getScoreBoard());
-
   let activePlayer = players[0];
   let gameOver = false;
   let isDraw = false;
@@ -154,6 +152,8 @@ function GameController(
   const getIsDraw = () => isDraw;
   const getActivePlayer = () => activePlayer;
   const getGameBoard = () => board.getBoard();
+  const getScoreBoard = () => scoreBoard.getScoreBoard();
+  const getPlayerScore = (playerId) => scoreBoard.getPlayerScore(playerId);
   const getPlayers = () => players;
   const isCellMarked = (row, col) => board.isCellMarked(row, col);
 
@@ -196,6 +196,7 @@ function GameController(
     if (isWin) {
       toggleGameOver();
       printGameOver();
+      scoreBoard.addScoreToPlayer(currentPlayer.id);
       return;
     }
 
@@ -219,6 +220,8 @@ function GameController(
     isCellMarked,
     changePlayerName,
     getPlayers,
+    getScoreBoard,
+    getPlayerScore,
   };
 }
 
@@ -226,6 +229,8 @@ function GameController(
   const game = GameController();
 
   const gameBoardEl = document.querySelector('#game-board');
+  const playerOneScoreEl = document.querySelector('#player-one-score');
+  const playerTwoScoreEl = document.querySelector('#player-two-score');
   const activePlayerNameEl = document.querySelector('#active-player--name');
   const activePlayerMarkEl = document.querySelector('#active-player--mark');
   const messageEl = document.querySelector('#message');
@@ -255,12 +260,37 @@ function GameController(
 
   const render = () => {
     const currentBoard = game.getGameBoard();
+    const currentScoreBoard = game.getScoreBoard();
     const players = game.getPlayers();
     const activePlayer = game.getActivePlayer();
     updateMessage(activePlayer);
     updateActivePlayer(activePlayer);
+    updateScoreBoard(currentScoreBoard);
     updateGameBoard(currentBoard);
     updateChangeNameForm(players);
+  };
+
+  const updateScoreBoard = (currentScoreBoard) => {
+    currentScoreBoard.forEach((player) => {
+      const playerScore = game.getPlayerScore(player.id);
+      if (player.id === 1) {
+        updatePlayerOneScore(playerScore);
+      }
+
+      if (player.id === 2) {
+        updatePlayerTwoScore(playerScore);
+      }
+    });
+  };
+
+  const updatePlayerOneScore = (points) => {
+    playerOneScoreEl.dataset.score = points;
+    playerOneScoreEl.textContent = points;
+  };
+
+  const updatePlayerTwoScore = (points) => {
+    playerTwoScoreEl.dataset.score = points;
+    playerTwoScoreEl.textContent = points;
   };
 
   const updateGameBoard = (currentBoard) => {
