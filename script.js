@@ -12,6 +12,8 @@ function GameBoard() {
   }
 
   const getBoard = () => board.map((row) => row.map((cell) => cell.getValue()));
+  const clearBoard = () =>
+    board.forEach((row) => row.forEach((cell) => cell.resetValue()));
 
   const markCell = (row, column, player) => {
     const cell = board[row][column];
@@ -48,6 +50,7 @@ function GameBoard() {
 
   return {
     getBoard,
+    clearBoard,
     printBoard,
     markCell,
     isWin,
@@ -64,8 +67,9 @@ function Cell() {
   };
 
   const getValue = () => value;
+  const resetValue = () => (value = '');
 
-  return { addMark, getValue };
+  return { addMark, getValue, resetValue };
 }
 
 function ScoreBoard() {
@@ -94,7 +98,16 @@ function ScoreBoard() {
     }
   };
 
-  return { getScoreBoard, addPlayer, getPlayerScore, addScoreToPlayer };
+  const resetScore = () =>
+    scoreBoard.forEach((player) => player.score.resetScore());
+
+  return {
+    getScoreBoard,
+    addPlayer,
+    getPlayerScore,
+    addScoreToPlayer,
+    resetScore,
+  };
 }
 
 function Score() {
@@ -211,6 +224,14 @@ function GameController(
     printNewRound();
   };
 
+  const resetGame = () => {
+    activePlayer = players[0];
+    gameOver = false;
+    isDraw = false;
+    board.clearBoard();
+    scoreBoard.resetScore();
+  };
+
   return {
     playRound,
     getGameBoard,
@@ -222,6 +243,7 @@ function GameController(
     getPlayers,
     getScoreBoard,
     getPlayerScore,
+    resetGame,
   };
 }
 
@@ -235,6 +257,7 @@ function GameController(
   const activePlayerMarkEl = document.querySelector('#active-player--mark');
   const messageEl = document.querySelector('#message');
   const changeNameBtnEl = document.querySelector('#change-name--btn');
+  const resetGameBtnEl = document.querySelector('#reset-game--btn');
   const cancelChangeNameBtnEl = document.querySelector(
     '#change-name--cancel-btn',
   );
@@ -270,6 +293,11 @@ function GameController(
     updateChangeNameForm(players);
   };
 
+  const resetGame = () => {
+    game.resetGame();
+    render();
+  };
+
   const updateScoreBoard = (currentScoreBoard) => {
     currentScoreBoard.forEach((player) => {
       const playerScore = game.getPlayerScore(player.id);
@@ -302,7 +330,12 @@ function GameController(
 
         if (cellEl && cellEl.textContent !== cellValue) {
           cellEl.textContent = cellValue;
-          cellEl.dataset.cellValue = cellValue;
+
+          if (cellValue === '') {
+            delete cellEl.dataset.cellValue;
+          } else {
+            cellEl.dataset.cellValue = cellValue;
+          }
         }
       });
     });
@@ -375,6 +408,7 @@ function GameController(
 
   changeNameBtnEl.addEventListener('click', openChangeNameDialog);
   cancelChangeNameBtnEl.addEventListener('click', closeChangeNameDialog);
+  resetGameBtnEl.addEventListener('click', resetGame);
   changeNameFormEl.addEventListener('submit', changeNameFormHandler);
 
   initializeBoard();
