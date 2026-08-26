@@ -51,8 +51,8 @@ html {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
-  width: 400px;
-  height: 400px;
+  width: 300px;
+  height: 300px;
 }
 
 @media screen and (width >= 900px) {
@@ -209,7 +209,7 @@ menu > ul {
 
 #score-board > .player-one,
 #score-board > .player-two {
-  font-size: 40px;
+  font-size: clamp(1.5rem, 5vw, 2rem);
   font-weight: 600;
 }
 
@@ -227,8 +227,12 @@ menu > ul {
 
 .score {
   font-family: 'Roboto Mono', monospace;
-  font-size: 48px;
+  font-size: clamp(2rem, 5vw, 2.5rem);
   color: var(--label-secondary);
+}
+
+.player {
+  font-size: clamp(1rem, 2.5vw, 2.5rem);
 }
 
 .player-one {
