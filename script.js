@@ -224,6 +224,13 @@ function GameController(
     printNewRound();
   };
 
+  const playAgain = () => {
+    gameOver = false;
+    isDraw = false;
+    activePlayer = players[0];
+    board.clearBoard();
+  };
+
   const resetGame = () => {
     activePlayer = players[0];
     gameOver = false;
@@ -244,6 +251,7 @@ function GameController(
     getScoreBoard,
     getPlayerScore,
     resetGame,
+    playAgain,
   };
 }
 
@@ -258,6 +266,7 @@ function GameController(
   const messageEl = document.querySelector('#message');
   const changeNameBtnEl = document.querySelector('#change-name--btn');
   const resetGameBtnEl = document.querySelector('#reset-game--btn');
+  const playAgainBtnEl = document.querySelector('#play-again--btn');
   const cancelChangeNameBtnEl = document.querySelector(
     '#change-name--cancel-btn',
   );
@@ -291,6 +300,7 @@ function GameController(
     updateScoreBoard(currentScoreBoard);
     updateGameBoard(currentBoard);
     updateChangeNameForm(players);
+    updatePlayAgain();
   };
 
   const resetGame = () => {
@@ -353,6 +363,19 @@ function GameController(
     }
   };
 
+  const updatePlayAgain = () => {
+    if (game.getGameOver()) {
+      playAgainBtnEl.disabled = false;
+    } else {
+      playAgainBtnEl.disabled = true;
+    }
+  };
+
+  const playAgainHandler = () => {
+    game.playAgain();
+    render();
+  };
+
   const updateMessage = (activePlayer) => {
     if (game.getGameOver() && game.getIsDraw()) {
       messageEl.textContent = 'Game over! Draw!';
@@ -409,7 +432,9 @@ function GameController(
   changeNameBtnEl.addEventListener('click', openChangeNameDialog);
   cancelChangeNameBtnEl.addEventListener('click', closeChangeNameDialog);
   resetGameBtnEl.addEventListener('click', resetGame);
+  playAgainBtnEl.addEventListener('click', playAgainHandler);
   changeNameFormEl.addEventListener('submit', changeNameFormHandler);
+  messageEl.addEventListener('click', playAgainHandler);
 
   initializeBoard();
   render();
