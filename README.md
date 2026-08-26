@@ -7,7 +7,7 @@ Tic Tac Toe game made using OOP paradigm.
 
 - Figma design
 
-  ![Figma design](./figma-design.png)
+  ![Figma design](./assets/figma-design.png)
 
 ## Features
 
