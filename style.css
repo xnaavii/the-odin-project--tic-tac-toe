@@ -54,13 +54,6 @@ html {
   width: 300px;
   height: 300px;
   position: relative;
-
-  #play-again--btn {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
 }
 
 @media screen and (width >= 900px) {
